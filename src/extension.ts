@@ -18,8 +18,13 @@ export function activate(context: vscode.ExtensionContext) {
 		// Display a message box to the user
 		vscode.window.showInformationMessage('Hello World from vcpkg!');
 	});
+	let disposable2 = vscode.commands.registerCommand('vcpkg.initVcpkgJson', ()=>{
+
+		vscode.window.showInformationMessage("vcpkg.json has been created.");
+	});
 
 	context.subscriptions.push(disposable);
+	context.subscriptions.push(disposable2);
 }
 
 // This method is called when your extension is deactivated

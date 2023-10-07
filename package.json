@@ -16,6 +16,10 @@
       {
         "command": "vcpkg.helloWorld",
         "title": "Hello World"
+      },
+      {
+        "command": "vcpkg.initVcpkgJson",
+        "title": "Init vcpkg"
       }
     ]
   },
