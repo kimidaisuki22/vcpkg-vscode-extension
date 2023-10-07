@@ -29,7 +29,28 @@
         "command": "vcpkg.setVcpkgConfigureRemoteURL",
         "title": "vcpkg: set configure json download url"
       }
-    ]
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "vcpkg-view",
+          "title": "vcpkg",
+          "icon": "assets/vcpkg.png"
+        }
+      ]
+    },
+    "views": {
+      "vcpkg-view":[
+        {
+          "id": "vcpkg-meta",
+          "name": "info"
+        },
+        {
+          "id": "vcpkg-ports",
+          "name": "ports"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
