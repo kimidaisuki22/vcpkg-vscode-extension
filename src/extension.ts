@@ -1,57 +1,10 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { existsSync, readFileSync, writeFile, writeFileSync } from 'fs';
+import { existsSync, writeFile, writeFileSync } from 'fs';
 import * as vscode from 'vscode';
 import { getVcpkgJsonContent } from './vcpkgJsonContent';
 import axios from 'axios';
-
-class VcpkgDependency{
-
-};
-class VcpkgManifest{
-	name!: string;
-	dependencies!:Array<VcpkgDependency|string>;
-};
-
-function getWorkDir(){
-	let folders = vscode.workspace.workspaceFolders;
-	if (!folders) {
-		return null;
-	}
-	let path = folders[0].uri.fsPath;
-	return path;
-}
-function getVcpkgJsonPath() {
-	let folders = vscode.workspace.workspaceFolders;
-	if (!folders) {
-		return null;
-	}
-	let path = folders[0].uri.fsPath;
-
-	let vcpkgJsonPath = path + "/vcpkg.json";
-	return vcpkgJsonPath;
-}
-
-function getVcpkgConfigurationJsonPath(){
-	let root = getWorkDir();
-	if(!root){
-		return null;
-	}
-	return root + "/vcpkg-configuration.json";
-}
-function getVcpkgConfigurationKeyName(){
-	return "VcpkgConfigureRemoteURL";
-}
-function parseVcpkgJson(path: string | null):VcpkgManifest | null {
-	if (!path) {
-		return null;
-	}
-	let rawContent = readFileSync(path);
-	if (!rawContent) {
-		return null;
-	}
-	return JSON.parse(rawContent.toString());
-}
+import { getVcpkgJsonPath, parseVcpkgJson, getVcpkgConfigurationKeyName, getVcpkgConfigurationJsonPath } from './getVcpkgJsonPath';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
