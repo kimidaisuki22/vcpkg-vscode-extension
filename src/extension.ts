@@ -120,6 +120,24 @@ export function activate(context: vscode.ExtensionContext) {
 		);
 	}
 
+	addCommand("vcpkg.nativeOpen",()=>{
+		vscode.commands.executeCommand('copyFilePath').then(ev=>{
+			vscode.window.showInformationMessage("file path has been copied to clipboard");
+		},why =>{
+			vscode.window.showErrorMessage(`failed to get file path: ${why}`);
+		});
+		let path = vscode.window.activeTextEditor?.document.fileName;
+		let tab = vscode.window.tabGroups.activeTabGroup.activeTab?.label;
+		vscode.window.showInformationMessage(`tab: ${tab}`);
+
+		if(!path){
+			vscode.window.showErrorMessage("no file opened");
+			return ;
+		}
+		vscode.window.showInformationMessage(`Open ${path}`);
+		// Use start on Windows
+		exec(`open '${path}'`);
+	});
 }
 
 // This method is called when your extension is deactivated

@@ -36,6 +36,10 @@
       {
         "command": "vcpkg.getInstallCMakes",
         "title": "vcpkg: get cmake install info"
+      },
+      {
+        "command": "vcpkg.nativeOpen",
+        "title": "nopen: open file with system native."
       }
     ],
     "viewsContainers": {
