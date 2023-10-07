@@ -50,8 +50,10 @@ export class VcpkgPortProvider implements vscode.TreeDataProvider<Port>{
       const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf-8'));
 
       const deps = packageJson.dependencies
-        ? packageJson.dependencies.map((dep: string) =>
-            toDep(dep, "v0")
+        ? packageJson.dependencies.map((dep: any) =>{
+            let name = dep.name ? dep.name : dep;
+            return toDep(name, "");
+        }
           )
         : [];
 
