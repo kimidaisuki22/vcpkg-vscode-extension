@@ -6,6 +6,7 @@ import { getVcpkgJsonContent } from './vcpkgJsonContent';
 import axios from 'axios';
 import { getVcpkgJsonPath, parseVcpkgJson, getVcpkgConfigurationKeyName, getVcpkgConfigurationJsonPath } from './getVcpkgJsonPath';
 import { VcpkgPortProvider } from './vcpkgPortsProvider';
+import { exec } from 'child_process';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -86,13 +87,33 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		});
 	});
+	let externInstall = ()=>{
+		let lines: string[] = [];
+		exec('vcpkg install',(exception,out,err)=>{
+			if(exception){
+				vscode.window.showErrorMessage(exception.message);
+			}
+			if(err){
+				vscode.window.showErrorMessage(err);
+			}
+			lines.push(out);
+			vscode.window.showInformationMessage(out);
+		});
+	};
+	addCommand('vcpkg.installPorts',()=>{
+		let term = vscode.window.createTerminal("vcpkg");
+		term.show();
+		term.sendText("/home/node/app/vcpkg/vcpkg install");
+	});
+	addCommand("vcpkg.getInstallCMakes",()=>{
+		externInstall();
+	});
 
 	const rootPath =
 		vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
 			? vscode.workspace.workspaceFolders[0].uri.fsPath
 			: undefined;
 	if (rootPath) {
-
 		vscode.window.registerTreeDataProvider(
 			'vcpkg-ports',
 			new VcpkgPortProvider(rootPath)

@@ -28,6 +28,14 @@
       {
         "command": "vcpkg.setVcpkgConfigureRemoteURL",
         "title": "vcpkg: set configure json download url"
+      },
+      {
+        "command": "vcpkg.installPorts",
+        "title": "vcpkg: install ports"
+      },
+      {
+        "command": "vcpkg.getInstallCMakes",
+        "title": "vcpkg: get cmake install info"
       }
     ],
     "viewsContainers": {
