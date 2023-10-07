@@ -16,6 +16,10 @@
       {
         "command": "vcpkg.initVcpkgJson",
         "title": "vcpkg: Init"
+      },
+      {
+        "command": "vcpkg.addDependency",
+        "title": "vcpkg: Add dependency"
       }
     ]
   },
