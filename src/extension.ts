@@ -88,7 +88,7 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		});
 	});
-	let disposable2 = vscode.commands.registerCommand('vcpkg.initVcpkgJson', () => {
+	addCommand('vcpkg.initVcpkgJson', () => {
 		let vcpkgJsonPath = getVcpkgJsonPath();
 		if (vcpkgJsonPath) {
 			vscode.window.showInformationMessage(`Working with ${vcpkgJsonPath}`);
@@ -133,7 +133,6 @@ export function activate(context: vscode.ExtensionContext) {
 		});
 	});
 
-	context.subscriptions.push(disposable2);
 }
 
 // This method is called when your extension is deactivated
