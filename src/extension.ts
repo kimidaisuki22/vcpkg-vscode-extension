@@ -5,6 +5,7 @@ import * as vscode from 'vscode';
 import { getVcpkgJsonContent } from './vcpkgJsonContent';
 import axios from 'axios';
 import { getVcpkgJsonPath, parseVcpkgJson, getVcpkgConfigurationKeyName, getVcpkgConfigurationJsonPath } from './getVcpkgJsonPath';
+import { VcpkgPortProvider } from './vcpkgPortsProvider';
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
@@ -85,6 +86,18 @@ export function activate(context: vscode.ExtensionContext) {
 			}
 		});
 	});
+
+	const rootPath =
+		vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
+			? vscode.workspace.workspaceFolders[0].uri.fsPath
+			: undefined;
+	if (rootPath) {
+
+		vscode.window.registerTreeDataProvider(
+			'vcpkg-ports',
+			new VcpkgPortProvider(rootPath)
+		);
+	}
 
 }
 
