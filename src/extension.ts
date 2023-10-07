@@ -3,6 +3,7 @@
 import { existsSync, readFileSync, writeFile, writeFileSync } from 'fs';
 import * as vscode from 'vscode';
 import { getVcpkgJsonContent } from './vcpkgJsonContent';
+import axios from 'axios';
 
 class VcpkgDependency{
 
@@ -12,6 +13,14 @@ class VcpkgManifest{
 	dependencies!:Array<VcpkgDependency|string>;
 };
 
+function getWorkDir(){
+	let folders = vscode.workspace.workspaceFolders;
+	if (!folders) {
+		return null;
+	}
+	let path = folders[0].uri.fsPath;
+	return path;
+}
 function getVcpkgJsonPath() {
 	let folders = vscode.workspace.workspaceFolders;
 	if (!folders) {
@@ -21,6 +30,17 @@ function getVcpkgJsonPath() {
 
 	let vcpkgJsonPath = path + "/vcpkg.json";
 	return vcpkgJsonPath;
+}
+
+function getVcpkgConfigurationJsonPath(){
+	let root = getWorkDir();
+	if(!root){
+		return null;
+	}
+	return root + "/vcpkg-configuration.json";
+}
+function getVcpkgConfigurationKeyName(){
+	return "VcpkgConfigureRemoteURL";
 }
 function parseVcpkgJson(path: string | null):VcpkgManifest | null {
 	if (!path) {
@@ -40,11 +60,13 @@ export function activate(context: vscode.ExtensionContext) {
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "vcpkg" is now active!');
-
+	let addCommand = (name:string,callback: (...args: any[]) => any,thisArg?:any) =>{
+		context.subscriptions.push(vscode.commands.registerCommand(name,callback,thisArg));
+	};
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('vcpkg.addDependency', () => {
+	addCommand('vcpkg.addDependency', () => {
 		let path = getVcpkgJsonPath();
 		if (!path) {
 			return;
@@ -83,7 +105,34 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 
-	context.subscriptions.push(disposable);
+	addCommand('vcpkg.setVcpkgConfigureRemoteURL',()=>{
+		vscode.window.showInputBox().then(input =>{
+			if(!input){
+				return;
+			}
+
+			context.globalState.update(getVcpkgConfigurationKeyName(),input);
+		});
+	});
+	addCommand('vcpkg.downloadConfiguration',()=>{
+		let dest = getVcpkgConfigurationJsonPath();
+		if(!dest){
+			vscode.window.showErrorMessage("please use it within a dir.");
+			return;
+		}
+		let url:string | undefined = context.globalState.get(getVcpkgConfigurationKeyName());
+		if(!url){
+			vscode.window.showErrorMessage("remote url not set");
+			return;
+		}
+		axios.get(url).then(resp=>{
+			let result = JSON.stringify(resp.data,null,2);
+			if(dest){
+				writeFileSync(dest,result,null);
+			}
+		});
+	});
+
 	context.subscriptions.push(disposable2);
 }
 
