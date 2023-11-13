@@ -44,6 +44,10 @@
       {
         "command": "vcpkg.update-baseline",
         "title": "vcpkg: update baseline"
+      },
+      {
+        "command": "vcpkg.cmake-build",
+        "title": "vcpkg: build cmake project"
       }
     ],
     "viewsContainers": {
@@ -56,7 +60,7 @@
       ]
     },
     "views": {
-      "vcpkg-view":[
+      "vcpkg-view": [
         {
           "id": "vcpkg-meta",
           "name": "info"

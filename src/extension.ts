@@ -123,6 +123,11 @@ export function activate(context: vscode.ExtensionContext) {
 		// 	vscode.window.showInformationMessage(out);
 		// });
 	});
+	addCommand("vcpkg.cmake-build",()=>{
+		let term = vscode.window.createTerminal("vcpkg-build");
+		term.show();
+		term.sendText("cmake --build build");
+	});
 
 	const rootPath =
 		vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
