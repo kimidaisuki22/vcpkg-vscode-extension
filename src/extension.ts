@@ -109,6 +109,21 @@ export function activate(context: vscode.ExtensionContext) {
 		externInstall();
 	});
 
+	addCommand("vcpkg.update-baseline",()=>{
+		let term = vscode.window.createTerminal("vcpkg");
+		term.show();
+		term.sendText("vcpkg x-update-baseline");
+		// exec('vcpkg x-update-baseline',(exception,out,err)=>{
+		// 	if(exception){
+		// 		vscode.window.showErrorMessage(exception.message);
+		// 	}
+		// 	if(err){
+		// 		vscode.window.showErrorMessage(err);
+		// 	}
+		// 	vscode.window.showInformationMessage(out);
+		// });
+	});
+
 	const rootPath =
 		vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0
 			? vscode.workspace.workspaceFolders[0].uri.fsPath

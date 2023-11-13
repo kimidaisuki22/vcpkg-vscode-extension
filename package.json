@@ -40,6 +40,10 @@
       {
         "command": "vcpkg.nativeOpen",
         "title": "nopen: open file with system native."
+      },
+      {
+        "command": "vcpkg.update-baseline",
+        "title": "vcpkg: update baseline"
       }
     ],
     "viewsContainers": {
